@@ -13,7 +13,7 @@ func init() {
 
 var quoteCmd = &cobra.Command{
 	Use: "quote",
-	Short: "Provides a random quote ZeroTwo.",
+	Short: "I'll recall a quote from my fractured memories.",
 	Long: "Will say a random quote from ZeroTwo, it may put you in touch with your emotions.",
 	Run: func(cmd *cobra.Command, args []string) {
 		quotes := make([]string, 0)

@@ -12,7 +12,7 @@ func init() {
 
 var sayHelloCmd = &cobra.Command{
 	Use: "hello",
-	Short: "Says hello, because you know... you're lonely.",
+	Short: "I'll always say hello for you. Whenever you like.",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Hello darling.")
 	},
