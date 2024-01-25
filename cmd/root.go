@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
 	Long:
 `
 Zerotwo is a CLI created by @iainbrux. It is a CLI that is intended
-to be immersive, as if communicating directly to zerotwo.
+to be immersive, as if communicating directly to ZeroTwo.
 
 She is human after all.
 `,
