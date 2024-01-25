@@ -29,7 +29,7 @@ Support may be added in the future to specify rank and lane.`,
 		url := "https://www.op.gg/champions/" + formatChampionString(champion) + "/build"
 		validUrl := validateUrl(url)
 
-		scraper.Scrape(validUrl.String())
+		scraper.Scrape(validUrl.String(), "league")
 	},
 }
 
