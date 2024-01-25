@@ -12,13 +12,19 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "zerotwo",
-	Short: "I'm a CLI that can retrieve data for you... darling.",
+	Short: "I can help you with your games, darling.",
 	Long:
 `
+                    _                 
+  _______ _ __ ___ | |___      _____  
+ |_  / _ \ '__/ _ \| __\ \ /\ / / _ \ 
+  / /  __/ | | (_) | |_ \ V  V / (_) |
+ /___\___|_|  \___/ \__| \_/\_/ \___/ 
+                                      
 Zerotwo is a CLI created by @iainbrux. It is a CLI that is intended
-to be immersive, as if communicating directly to ZeroTwo.
+to be immersive, as if communicating directly to Zerotwo herself.
 
-She is human after all.
+Well... she is human after all.
 `,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:

@@ -15,6 +15,13 @@ var versionCmd = &cobra.Command{
 	Short: "Prints my current version number... even though I'm human.",
 	Long: "All software has versions... but I'm human, aren't I darling?",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("v0.2")
+		fmt.Println(
+`        ___   ___  
+       / _ \ |__ \ 
+__   _| | | |   ) |
+\ \ / / | | |  / / 
+ \ V /| |_| | / /_ 
+  \_/  \___(_)____|
+		`)
 	},
 }
