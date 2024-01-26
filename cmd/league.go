@@ -11,13 +11,13 @@ import (
 )
 
 func init() {
-	getCmd.Flags().StringP("champion", "c", "", "Name of the LoL champion you wish ZeroTwo to search for")
-	getCmd.MarkFlagRequired("champion")
+	leagueCmd.Flags().StringP("champion", "c", "", "Name of the LoL champion you wish ZeroTwo to search for")
+	leagueCmd.MarkFlagRequired("champion")
 
-	rootCmd.AddCommand(getCmd)
+	RootCmd.AddCommand(leagueCmd)
 }
 
-var getCmd = &cobra.Command{
+var leagueCmd = &cobra.Command{
 	Use: "league",
 	Short: "Need help with a League of Legends champion darling?",
 	Long:`Harnesses the power of ZeroTwo and obtains a quick synopsis of a LoL champion that you provide.
