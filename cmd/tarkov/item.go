@@ -12,27 +12,26 @@ import (
 )
 
 func init() {
-	queryTarkovCmd.Flags().StringP("item", "i", "", "")
-	queryTarkovCmd.MarkFlagsRequiredTogether("item")
+	itemTarkovCmd.Flags().StringP("name", "n", "", "")
+	itemTarkovCmd.MarkFlagRequired("name")
 
-	tarkovCmd.AddCommand(queryTarkovCmd)
+	tarkovCmd.AddCommand(itemTarkovCmd)
 }
 
-type QueryResponse struct {
+type ItemResponse struct {
 	Data struct {
-		Items []QueryItem `json:"items"`
+		Items []ItemItem `json:"items"`
 	} `json:"data"`
 }
 
-type QueryItem struct {
-	Avg24hPrice int `json:"avg24hPrice"`
+type ItemItem struct {
 	Id string `json:"id"`
 	Name string `json:"name"`
 	Shortname string `json:"shortName"`
 }
 
-var queryTarkovCmd = &cobra.Command{
-	Use: "query",
+var itemTarkovCmd = &cobra.Command{
+	Use: "item",
 	Short: "Let me help you with Escape from Tarkov",
 	Long:`Zerotwo will search through her deep knowledge and obtain a list of 
 items that contain your query search term.
@@ -43,7 +42,7 @@ passing the shortname to the "zerotwo tarkov item" command.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		item, _ := cmd.Flags().GetString("item")
 
-		body := strings.NewReader(`{"query": "{ items(name: \"`+ item +`\") {avg24hPrice id name shortName } }"}`)
+		body := strings.NewReader(`{"query": "{ items(name: \"`+ item +`\") {id name shortName } }"}`)
 		req, err := http.NewRequest("POST", "https://api.tarkov.dev/graphql", body)
 		if err != nil {
 				log.Fatalln(err)
@@ -60,14 +59,14 @@ passing the shortname to the "zerotwo tarkov item" command.`,
 				log.Fatalln(err)
 		}
 
-		data := QueryResponse{}
+		data := ItemResponse{}
 
 		json.Unmarshal(bodyBytes, &data)
 
-		fmt.Println("D: [ShortName] Full Item Name // ₽ 24hr Avg Price")
+		fmt.Println("// [ShortName] Full Item Name //")
 		
 		for index, item := range data.Data.Items {
-			fmt.Printf("%d: " + "[" + item.Shortname + "] " + item.Name + " // ₽%d \n", index, item.Avg24hPrice)
+			fmt.Printf("%d: " + "[" + item.Shortname + "] " + item.Name + "\n", index)
 		}
 
 		defer resp.Body.Close()
