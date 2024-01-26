@@ -13,7 +13,7 @@ import (
 
 func init() {
 	queryTarkovCmd.Flags().StringP("item", "i", "", "")
-	queryTarkovCmd.MarkFlagsRequiredTogether("item")
+	queryTarkovCmd.MarkFlagRequired("item")
 
 	tarkovCmd.AddCommand(queryTarkovCmd)
 }
