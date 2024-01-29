@@ -6,10 +6,14 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
+	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 func init() {
@@ -90,14 +94,17 @@ passing the shortname to the "zerotwo tarkov item" command.`,
 }
 
 func formatResponse(items []QueryItem, cached bool) {
-	header := "D: [ShortName] Full Item Name // ₽ 24hr Avg Price"
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"ShortName","Full Item Name","₽ 24hr Avg Price"})
 
-	if cached {
-		header = header + " -- CACHED"
+	for _, item := range items {
+		table.Append([]string{item.Shortname,item.Name,formatRoublesValue(item.Avg24hPrice)})
 	}
 
-	fmt.Println(header)
-	for index, item := range items {
-		fmt.Printf("%d: " + "[" + item.Shortname + "] " + item.Name + " // ₽%d \n", index, item.Avg24hPrice)
-	}
+	table.Render()
+}
+
+func formatRoublesValue(value int) string {
+	p := message.NewPrinter(language.English)
+	return p.Sprintf("₽ %d", value)
 }
