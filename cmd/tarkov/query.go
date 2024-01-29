@@ -101,6 +101,10 @@ func formatResponse(items []QueryItem, cached bool) {
 		table.Append([]string{item.Shortname,item.Name,formatRoublesValue(item.Avg24hPrice)})
 	}
 
+	if cached {
+		table.SetFooter([]string{" ","Using Zerotwo's memories."," "})
+	}
+
 	table.Render()
 }
 
