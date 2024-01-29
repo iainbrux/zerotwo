@@ -95,14 +95,26 @@ passing the shortname to the "zerotwo tarkov item" command.`,
 
 func formatResponse(items []QueryItem, cached bool) {
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ShortName","Full Item Name","₽ 24hr Avg Price"})
+	table.SetHeader([]string{
+		"ShortName",
+		"Full Item Name",
+		"₽ 24hr Avg Price",
+	})
 
 	for _, item := range items {
-		table.Append([]string{item.Shortname,item.Name,formatRoublesValue(item.Avg24hPrice)})
+		table.Append([]string{
+			item.Shortname,
+			item.Name,
+			formatRoublesValue(item.Avg24hPrice),
+		})
 	}
 
 	if cached {
-		table.SetFooter([]string{" ","Using Zerotwo's memories."," "})
+		table.SetFooter([]string{
+			" ",
+			"Using Zerotwo's memories.",
+			" ",
+		})
 	}
 
 	table.Render()
