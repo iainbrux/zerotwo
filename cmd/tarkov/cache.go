@@ -13,15 +13,15 @@ type tarkovCache struct {
 
 func (cache *tarkovCache) update(key string, value []QueryItem) {
 	cacheItem := tarkovCache{
-			Items:     value,
-			Timestamp: time.Now(),
+		Items:     value,
+		Timestamp: time.Now(),
 	}
 
 	// Read the existing data
 	file, err := os.ReadFile("tarkovCache.json")
 	data := make(map[string]tarkovCache)
 	if err == nil {
-			_ = json.Unmarshal(file, &data)
+		_ = json.Unmarshal(file, &data)
 	}
 
 	// Update the specific key with the new value
@@ -36,7 +36,7 @@ func (cache *tarkovCache) read(key string) (tarkovCache, bool) {
 	// Read the existing data
 	file, err := os.ReadFile("tarkovCache.json")
 	if err != nil {
-			return tarkovCache{}, false
+		return tarkovCache{}, false
 	}
 
 	data := make(map[string]tarkovCache)
@@ -45,7 +45,7 @@ func (cache *tarkovCache) read(key string) (tarkovCache, bool) {
 	// Check if the key exists in the map
 	cacheItem, ok := data[key]
 	if !ok {
-			return tarkovCache{}, false
+		return tarkovCache{}, false
 	}
 
 	return cacheItem, true
