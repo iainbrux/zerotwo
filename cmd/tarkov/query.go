@@ -13,7 +13,8 @@ import (
 )
 
 func init() {
-	queryTarkovCmd.Flags().StringP("item", "i", "", "")
+	queryTarkovCmd.Flags().StringP("item", "i", "", "The search term that Zerotwo should search for - can be a partial search term")
+	queryTarkovCmd.Flags().BoolP("no-cache", "c", false, "Asks Zerotwo to obtain a fresh result instead of using her memories")
 	queryTarkovCmd.MarkFlagRequired("item")
 
 	tarkovCmd.AddCommand(queryTarkovCmd)
@@ -43,11 +44,12 @@ can then be used to ask Zerotwo to further provide indepth data of the item by
 passing the shortname to the "zerotwo tarkov item" command.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		item, _ := cmd.Flags().GetString("item")
+		noCache, _ := cmd.Flags().GetBool("no-cache")
 
 		cache := &tarkovCache{}
 		res, ok := cache.read(item)
 
-		if ok {
+		if ok && !noCache {
 			if time.Now().Before(res.Timestamp.Add(time.Minute * 5)) {
 				formatResponse(res.Items, true)
 				return

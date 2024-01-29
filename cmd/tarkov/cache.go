@@ -3,6 +3,7 @@ package tarkov
 import (
 	"encoding/json"
 	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -11,6 +12,9 @@ type tarkovCache struct {
 	Items []QueryItem `json:"items"`
 }
 
+// Put this into temporary files so that it is removed when OS restarts
+var cacheFile = filepath.Join(os.TempDir(), "tarkov_cache.json")
+
 func (cache *tarkovCache) update(key string, value []QueryItem) {
 	cacheItem := tarkovCache{
 		Items:     value,
@@ -18,7 +22,7 @@ func (cache *tarkovCache) update(key string, value []QueryItem) {
 	}
 
 	// Read the existing data
-	file, err := os.ReadFile("tarkovCache.json")
+	file, err := os.ReadFile(cacheFile)
 	data := make(map[string]tarkovCache)
 	if err == nil {
 		_ = json.Unmarshal(file, &data)
@@ -29,12 +33,12 @@ func (cache *tarkovCache) update(key string, value []QueryItem) {
 
 	// Write the updated data back to the file
 	file, _ = json.MarshalIndent(data, "", " ")
-	_ = os.WriteFile("tarkovCache.json", file, 0644)
+	_ = os.WriteFile(cacheFile, file, 0644)
 }
 
 func (cache *tarkovCache) read(key string) (tarkovCache, bool) {
 	// Read the existing data
-	file, err := os.ReadFile("tarkovCache.json")
+	file, err := os.ReadFile(cacheFile)
 	if err != nil {
 		return tarkovCache{}, false
 	}
