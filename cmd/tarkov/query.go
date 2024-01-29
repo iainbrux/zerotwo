@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -43,6 +44,16 @@ passing the shortname to the "zerotwo tarkov item" command.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		item, _ := cmd.Flags().GetString("item")
 
+		cache := &tarkovCache{}
+		res, ok := cache.read(item)
+
+		if ok {
+			if time.Now().Before(res.Timestamp.Add(time.Minute * 5)) {
+				formatResponse(res.Items, true)
+				return
+			}
+		}
+
 		body := strings.NewReader(`{"query": "{ items(name: \"`+ item +`\") {avg24hPrice id name shortName } }"}`)
 		req, err := http.NewRequest("POST", "https://api.tarkov.dev/graphql", body)
 		if err != nil {
@@ -55,21 +66,36 @@ passing the shortname to the "zerotwo tarkov item" command.`,
 		if err != nil {
 				log.Fatalln(err)
 		}
+
 		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
 				log.Fatalln(err)
 		}
 
-		data := QueryResponse{}
+		defer resp.Body.Close()
 
+		data := QueryResponse{}
 		json.Unmarshal(bodyBytes, &data)
 
-		fmt.Println("D: [ShortName] Full Item Name // ₽ 24hr Avg Price")
-		
-		for index, item := range data.Data.Items {
-			fmt.Printf("%d: " + "[" + item.Shortname + "] " + item.Name + " // ₽%d \n", index, item.Avg24hPrice)
+		if len(data.Data.Items) == 0 {
+			fmt.Printf("Sorry darling, no results found for item '%s'\n", item)
+			return
 		}
 
-		defer resp.Body.Close()
+		cache.update(item, data.Data.Items)
+		formatResponse(data.Data.Items, false)
 	},
+}
+
+func formatResponse(items []QueryItem, cached bool) {
+	header := "D: [ShortName] Full Item Name // ₽ 24hr Avg Price"
+
+	if cached {
+		header = header + " -- CACHED"
+	}
+
+	fmt.Println(header)
+	for index, item := range items {
+		fmt.Printf("%d: " + "[" + item.Shortname + "] " + item.Name + " // ₽%d \n", index, item.Avg24hPrice)
+	}
 }
