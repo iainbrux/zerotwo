@@ -113,7 +113,9 @@ func formatResponse(items []QueryItem, cached bool) {
 	}
 
 	if cached {
-		table.SetCaption(true, "Utilised Zerotwo's memories. Pass --no-cache to disable.")
+		table.SetCaption(true, "Retrieved from Zerotwo's memories. Pass --no-cache to disable.")
+	} else {
+		table.SetCaption(true, "Added to Zerotwo's memories.")
 	}
 
 	table.Render()
