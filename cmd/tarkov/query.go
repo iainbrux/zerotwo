@@ -112,13 +112,13 @@ func formatResponse(items []QueryItem, cached bool) {
 		})
 	}
 
-	if cached {
-		table.SetCaption(true, "Retrieved from Zerotwo's memories. Pass --no-cache to disable.")
-	} else {
-		table.SetCaption(true, "Added to Zerotwo's memories.")
-	}
-
 	table.Render()
+
+	if cached {
+		fmt.Println("Retrieved from Zerotwo's memories. Pass --no-cache to disable.")
+	} else {
+		fmt.Println("Added to Zerotwo's memories.")
+	}
 }
 
 func formatRoublesValue(value int) string {
