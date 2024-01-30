@@ -13,6 +13,8 @@ type Build struct {
 	percentages []string
 }
 
+// TODO: Figure out a way to make this nicely presented in the console ui
+
 func LeagueScraper(url string) {
 	collector := colly.NewCollector()
 	 

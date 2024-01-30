@@ -43,9 +43,9 @@ var queryTarkovCmd = &cobra.Command{
 	Long:`Zerotwo will search through her deep knowledge and obtain a list of 
 items that contain your query search term.
 
-She then presents the item(s) in the form of "[ShortName] Full Item Name" which
-can then be used to ask Zerotwo to further provide indepth data of the item by
-passing the shortname to the "zerotwo tarkov item" command.`,
+She then presents the item(s) in a table which can then be used to ask Zerotwo
+to further provide indepth data of the item by passing the IDX to the 
+"zerotwo tarkov item" command.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		item, _ := cmd.Flags().GetString("item")
 		noCache, _ := cmd.Flags().GetBool("no-cache")
